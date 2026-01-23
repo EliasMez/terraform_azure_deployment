@@ -57,3 +57,56 @@ output "sql_admin_password_secret" {
   value       = azurerm_key_vault_secret.sql_admin_password.name
   sensitive   = true
 }
+
+
+### DATALAKE OUTPUTS
+output "storage_account_name" {
+  description = "The name of the storage account"
+  value       = azurerm_storage_account.datalake.name
+}
+
+output "storage_account_id" {
+  description = "The ID of the storage account"
+  value       = azurerm_storage_account.datalake.id
+}
+
+output "container_names" {
+  description = "The names of the storage containers"
+  value       = [for container in azurerm_storage_container.container : container.name]
+}
+
+output "container_ids" {
+  description = "The IDs of the storage containers"
+  value       = [for container in azurerm_storage_container.container : container.id]
+}
+
+
+### IDENTITY OUTPUTS
+output "identity_id" {
+  value = azurerm_user_assigned_identity.user_identity.id
+}
+
+output "identity_name" {
+  value = azurerm_user_assigned_identity.user_identity.name
+}
+
+output "identity_principal_id" {
+  value = azurerm_user_assigned_identity.user_identity.principal_id
+}
+
+
+### SERVICEPRINCIPAL OUTPUTS
+# output "datalakeCredentials" {
+#   sensitive = true
+#   value = {
+#     "clientID"     = azuread_application.app_registration_mezine.client_id
+#     "clientSecret" = azuread_application_password.app_registration_secret.value
+#     "datalakeClientObjectID" = azuread_service_principal.sp_databricks.object_id
+#   }
+# }
+
+# output "secret_key_name" {
+#   value = azurerm_key_vault_secret.app_secret.name
+# }
+
+#git commit -m "feat: ajout du datalake identité managée par utilisateur et principal de service"

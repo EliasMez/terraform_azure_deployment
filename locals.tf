@@ -25,6 +25,27 @@ keyvault_name            = "mezinekeyvaultnhood"
 keyvault_id              = azurerm_key_vault.mezinekeyvaultnhood.id
 keyvault_uri             = azurerm_key_vault.mezinekeyvaultnhood.vault_uri
 
+## MUI
+identity_principal_id    = azurerm_user_assigned_identity.user_identity.principal_id
+identity_id              = azurerm_user_assigned_identity.user_identity.id
+
+
+### DATALAKE
+storage_account_name         = "mezinestorageaccnhood"
+storage_account_id           = azurerm_storage_account.datalake.id
+
+container_names = [
+    "00-temp",
+    "10-unprocessed",
+    "20-raw",
+    "50-entity",
+    "90-out"
+  ]
+
+container_tfstate                = "tfstate"
+app_registration_datalake        = "mezine_app_registration_datalake_nhood"
+app_registration_datalake_secret = "mezine-app-registration-secret-datalake-nhood"
+
 ### TAGS
 created_by                   = "Elias Mezine"
 managed_by                   = "Terraform"
