@@ -1,0 +1,9 @@
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+memo.txt
+static-site
+.terraform/
+.terraform.lock.hcl
+*.tfstate.*
+*.disabled
