@@ -13,15 +13,15 @@ location                 = "France Central"
 otherlocation            = "North Europe"
 
 ### PUREVIEW
-purview_name             = "mezinepurviewnhood"
+purview_name             = "mezinepurviewnhood2"
 
 ### DATABASE
-sql_server_name          = "mezineserveursqlnhood"
+sql_server_name          = "mezineserveursqlnhood2"
 sql_database_name        = "mezinebasenhood"
 sql_aad_admin_login      = "aadadmin"
 
 ### KEYVAULT
-keyvault_name            = "mezinekeyvaultnhood"
+keyvault_name            = "mezinekeyvaultnhood2"
 keyvault_id              = azurerm_key_vault.mezinekeyvaultnhood.id
 keyvault_uri             = azurerm_key_vault.mezinekeyvaultnhood.vault_uri
 
@@ -31,7 +31,7 @@ identity_id              = azurerm_user_assigned_identity.user_identity.id
 
 
 ### DATALAKE
-storage_account_name         = "mezinestorageaccnhood"
+storage_account_name         = "mezinestorageaccnhood2"
 storage_account_id           = azurerm_storage_account.datalake.id
 
 container_names = [

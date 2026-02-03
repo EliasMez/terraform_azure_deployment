@@ -9,15 +9,13 @@ resource "azurerm_key_vault" "mezinekeyvaultnhood" {
   access_policy {
     tenant_id = local.tenant_id
     object_id = local.object_id
+    secret_permissions = ["Get", "List", "Set", "Delete","Recover"]
+  }
 
-    secret_permissions = [
-      "Get",
-      "List",
-      "Set",
-      "Delete",
-      "Recover",
-    ]
-    
+  access_policy {
+    tenant_id = local.tenant_id
+    object_id = azurerm_purview_account.purview.identity[0].principal_id
+    secret_permissions = ["Get","List"]
   }
 
 # Désactivé - pas de Databricks
