@@ -46,6 +46,13 @@ container_tfstate                = "tfstate"
 app_registration_datalake        = "mezine_app_registration_datalake_nhood"
 app_registration_datalake_secret = "mezine-app-registration-secret-datalake-nhood"
 
+
+### DATA FACTORY
+factory_name                 = "mezinefactorynhood2"
+linked_service_datalake      = "mezine-ls-dtl"
+linked_service_keyvault      = "ls-keyvault"
+linked_service_sql_database  = "ls-azuresql"
+
 ### TAGS
 created_by                   = "Elias Mezine"
 managed_by                   = "Terraform"

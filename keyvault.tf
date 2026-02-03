@@ -18,6 +18,12 @@ resource "azurerm_key_vault" "mezinekeyvaultnhood" {
     secret_permissions = ["Get","List"]
   }
 
+  access_policy {
+    tenant_id = local.tenant_id
+    object_id = azurerm_data_factory.adf.identity[0].principal_id
+    secret_permissions = ["Get", "List"]
+  }
+
 # Désactivé - pas de Databricks
 # access_policy {
 #   tenant_id = local.tenant_id
