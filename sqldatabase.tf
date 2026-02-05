@@ -26,18 +26,6 @@ resource "azurerm_mssql_database" "mezinesqldatabase" {
   sku_name   = "Basic"
 }
 
-# Commenté - User Managed Identity pas déployée
-# resource "azurerm_role_assignment" "sqlserver_sql_db_contributor" {
-#   scope                = azurerm_mssql_server.mezinesqlservernhood.id
-#   role_definition_name = "SQL DB Contributor"
-#   principal_id         = local.identity_principal_id
-# }
-
-# resource "azurerm_role_assignment" "sqldatabase_sql_db_contributor" {
-#   scope                = azurerm_mssql_database.mezinesqldatabase.id
-#   role_definition_name = "SQL DB Contributor"
-#   principal_id         = local.identity_principal_id
-# }
 
 resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   name             = "AllowAzureServices"

@@ -30,13 +30,6 @@ resource "azurerm_key_vault" "mezinekeyvaultnhood" {
     secret_permissions = ["Get", "List"]
   }
 
-# Désactivé - pas de User Managed Identity
-# access_policy {
-#   tenant_id = local.tenant_id
-#   object_id = local.identity_principal_id
-#   secret_permissions = ["Get", "List"]
-# }
-
   tags = {
     ManagedBy   = local.managed_by
     CreatedBy   = local.created_by

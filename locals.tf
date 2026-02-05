@@ -37,11 +37,6 @@ secret_key_name          = azurerm_key_vault_secret.app_secret.name
 keyvault_id              = azurerm_key_vault.mezinekeyvaultnhood.id
 keyvault_uri             = azurerm_key_vault.mezinekeyvaultnhood.vault_uri
 
-## MUI
-identity_principal_id    = azurerm_user_assigned_identity.user_identity.principal_id
-identity_id              = azurerm_user_assigned_identity.user_identity.id
-
-
 ### DATALAKE
 storage_account_name         = "mezinestorageaccnhood2"
 storage_account_id           = azurerm_storage_account.datalake.id
