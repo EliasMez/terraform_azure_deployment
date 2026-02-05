@@ -7,3 +7,4 @@ static-site
 .terraform.lock.hcl
 *.tfstate.*
 *.disabled
+.claude

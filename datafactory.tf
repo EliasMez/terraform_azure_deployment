@@ -3,8 +3,7 @@ resource "azurerm_data_factory" "adf" {
   location            = local.location
   resource_group_name = local.resource_group_name
   identity {
-    type = "SystemAssigned, UserAssigned"
-    identity_ids = [local.identity_id]
+    type = "SystemAssigned"
   }
 
   tags = {
@@ -13,19 +12,6 @@ resource "azurerm_data_factory" "adf" {
   }
 
   depends_on = [azurerm_resource_group.rg]
-}
-
-# Attribution des rôles de Azure Data Factory (ADF) pour l'identité managée par l'utilisateur
-resource "azurerm_role_assignment" "adf_contributor" {
-  scope                = azurerm_data_factory.adf.id
-  role_definition_name = "Contributor"
-  principal_id         = local.identity_principal_id
-}
-
-resource "azurerm_role_assignment" "adf_data_factory_contributor" {
-  scope                = azurerm_data_factory.adf.id
-  role_definition_name = "Data Factory Contributor"
-  principal_id         = local.identity_principal_id
 }
 
 

@@ -30,18 +30,6 @@ resource "azurerm_storage_container" "container" {
   container_access_type = "private"
 }
 
-# Attribution des rôles du Data Lake Gen2 pour l'identité managée par l'utilisateur
-resource "azurerm_role_assignment" "datalake_storage_blob_data_contributor_usi" {
-  scope                = azurerm_storage_account.datalake.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = local.identity_principal_id
-}
-
-resource "azurerm_role_assignment" "datalake_storage_reader" {
-  scope                = azurerm_storage_account.datalake.id
-  role_definition_name = "Reader"
-  principal_id         = local.identity_principal_id
-}
 
 # Attribution des rôles à l'utilisateur Azure AD actuel pour le compte de stockage (optionnel)
 # pour que ça fonctionne sur l'interface
@@ -55,3 +43,9 @@ resource "azurerm_role_assignment" "user_storage_access" {
   }
 }
 
+# Attribution des rôles au principal de service possèdant les droits d'accès au datalake qui sera utilisé par databricks
+resource "azurerm_role_assignment" "sp_databricks_storage_access" {
+  scope                = azurerm_storage_account.datalake.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = local.datalakeCredentials.datalakeClientObjectID
+}

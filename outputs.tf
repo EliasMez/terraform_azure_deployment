@@ -96,17 +96,60 @@ output "identity_principal_id" {
 
 
 ### SERVICEPRINCIPAL OUTPUTS
-# output "datalakeCredentials" {
-#   sensitive = true
-#   value = {
-#     "clientID"     = azuread_application.app_registration_mezine.client_id
-#     "clientSecret" = azuread_application_password.app_registration_secret.value
-#     "datalakeClientObjectID" = azuread_service_principal.sp_databricks.object_id
-#   }
-# }
+output "datalakeCredentials" {
+  sensitive = true
+  value = {
+    "clientID"     = azuread_application.app_registration_mezine.client_id
+    "clientSecret" = azuread_application_password.app_registration_secret.value
+    "datalakeClientObjectID" = azuread_service_principal.sp_databricks.object_id
+  }
+}
 
-# output "secret_key_name" {
-#   value = azurerm_key_vault_secret.app_secret.name
-# }
+output "secret_key_name" {
+  value = azurerm_key_vault_secret.app_secret.name
+}
 
-#git commit -m "feat: ajout du datalake identité managée par utilisateur et principal de service"
+
+
+### DATAFACTORY OUTPUTS
+output "data_factory_id" {
+  description = "ID de la Data Factory"
+  value       = azurerm_data_factory.adf.id
+}
+
+output "data_factory_name" {
+  description = "Nom de la Data Factory"
+  value       = azurerm_data_factory.adf.name
+}
+
+output "adf_managed_sys_principal_id" {
+  description = "principal ID de l'identité managée par le système de datafactory"
+  value       = azurerm_data_factory.adf.identity[0].principal_id
+}
+
+
+
+## DATABRICKS OUTPUTS
+output "databricks_host" {
+  value = azurerm_databricks_workspace.this.workspace_url
+}
+
+output "databricks_workspace_id" {
+  value = azurerm_databricks_workspace.this.id
+}
+
+output "databricks_sp_oid" {
+  description = "Object ID du service principal Azure Databricks"
+  value       = data.azuread_service_principal.sp_databricks.object_id
+}
+
+output "databricks_sp_client_id" {
+  description = "Object ID du service principal Azure Databricks"
+  value       = data.azuread_service_principal.sp_databricks.client_id
+}
+
+output "spark_conf" {
+  description = "Configuration datalake du cluster databricks"
+  value       = databricks_cluster.cluster.spark_conf
+  sensitive   = true
+}

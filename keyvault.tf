@@ -24,32 +24,17 @@ resource "azurerm_key_vault" "mezinekeyvaultnhood" {
     secret_permissions = ["Get", "List"]
   }
 
-# Désactivé - pas de Databricks
-# access_policy {
-#   tenant_id = local.tenant_id
-#   object_id = local.databricks_sp_oid
-#   secret_permissions = ["Get", "List"]
-# }
+  access_policy {
+    tenant_id = local.tenant_id
+    object_id = local.databricks_sp_oid
+    secret_permissions = ["Get", "List"]
+  }
 
 # Désactivé - pas de User Managed Identity
 # access_policy {
 #   tenant_id = local.tenant_id
 #   object_id = local.identity_principal_id
 #   secret_permissions = ["Get", "List"]
-# }
-
-
-
-
-######## TEST
-# access_policy {
-#   tenant_id = local.tenant_id
-#   object_id = var.adf_managed_sys_principal_id
-
-#   secret_permissions = [
-#     "Get",
-#     "List"
-#   ]
 # }
 
   tags = {
