@@ -8,3 +8,5 @@ static-site
 *.tfstate.*
 *.disabled
 .claude
+.infracost
+*.html
