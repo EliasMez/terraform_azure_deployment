@@ -4,6 +4,16 @@ output "tenant_id" {
   value = data.azuread_client_config.current.tenant_id
 }
 
+output "subscription_id" {
+  description = "ID de la subscription Azure"
+  value       = local.subscription_id
+}
+
+output "resource_group_name" {
+  description = "Nom du resource group"
+  value       = local.resource_group_name
+}
+
 
 ### KEYVAULT OUTPUTS
 
@@ -35,6 +45,11 @@ output "purview_id" {
   value       = azurerm_purview_account.purview.id
 }
 
+output "purview_principal_id" {
+  description = "Principal ID de l'identité managée Purview"
+  value       = azurerm_purview_account.purview.identity[0].principal_id
+}
+
 
 ### SQL DATABASE
 
@@ -56,6 +71,11 @@ output "sql_admin_password_secret" {
   description = "Nom du secret Key Vault contenant le mot de passe admin SQL."
   value       = azurerm_key_vault_secret.sql_admin_password.name
   sensitive   = true
+}
+
+output "sql_connection_string" {
+  description = "Connection string SQL (sans password)"
+  value       = "Server=tcp:${azurerm_mssql_server.mezinesqlservernhood.fully_qualified_domain_name},1433;Database=${azurerm_mssql_database.mezinesqldatabase.name};User ID=${var.administrator_login};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
 
 
@@ -80,15 +100,6 @@ output "container_ids" {
   value       = [for container in azurerm_storage_container.container : container.id]
 }
 
-
-### IDENTITY OUTPUTS
-output "identity_id" {
-  value = azurerm_user_assigned_identity.user_identity.id
-}
-
-output "identity_name" {
-  value = azurerm_user_assigned_identity.user_identity.name
-}
 
 
 ### SERVICEPRINCIPAL OUTPUTS

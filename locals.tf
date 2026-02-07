@@ -64,7 +64,6 @@ linked_service_datalake      = "mezine-ls-dtl"
 linked_service_keyvault      = "ls-keyvault"
 linked_service_sql_database  = "ls-azuresql"
 
-# container_tfstate            = "tfstate"
 
 ### TAGS
 created_by                   = "Elias Mezine"
