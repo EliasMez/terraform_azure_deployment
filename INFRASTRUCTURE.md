@@ -100,6 +100,7 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 |---------|---------|
 | `providers.tf` | Configuration des providers Azure |
 | `versions.tf` | Versions requises |
+| `backend.tf` | Backend distant Azure Storage |
 | `variables.tf` | Variables d'entrée |
 | `locals.tf` | Valeurs locales |
 | `resourcegroup.tf` | Resource Group |
