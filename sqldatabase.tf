@@ -27,6 +27,7 @@ resource "azurerm_mssql_database" "mezinesqldatabase" {
 }
 
 
+
 resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   name             = "AllowAzureServices"
   server_id        = azurerm_mssql_server.mezinesqlservernhood.id
@@ -48,7 +49,7 @@ resource "null_resource" "create_clients_table" {
       -d ${azurerm_mssql_database.mezinesqldatabase.name} \
       -U ${var.administrator_login} \
       -P ${var.administrator_login_password} \
-      -Q "CREATE TABLE clients (id INT PRIMARY KEY, name NVARCHAR(100), email NVARCHAR(100))"
+      -Q "CREATE TABLE clients (id INT PRIMARY KEY, name NVARCHAR(100), email NVARCHAR(100), created_at DATETIME DEFAULT GETDATE())"
     EOT
   }
   depends_on = [azurerm_mssql_database.mezinesqldatabase]
@@ -68,3 +69,33 @@ resource "null_resource" "insert_clients_table" {
   depends_on = [azurerm_mssql_database.mezinesqldatabase]
 }
 
+
+resource "azurerm_monitor_metric_alert" "sql_dtu" {
+  name                = "SQL-DTU-90"
+  resource_group_name = local.resource_group_name
+  scopes              = [azurerm_mssql_database.mezinesqldatabase.id]
+  description         = "Alerte si utilisation DTU > 90%"
+
+  criteria {
+    metric_namespace = "Microsoft.Sql/servers/databases"
+    metric_name      = "dtu_consumption_percent"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    threshold        = 90
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_alert.id
+  }
+
+  frequency   = "PT5M"
+  window_size = "PT15M"
+  severity    = 4
+
+  tags = {
+    ManagedBy = local.managed_by
+    CreatedBy = local.created_by
+  }
+
+  depends_on = [azurerm_mssql_database.mezinesqldatabase]
+}
