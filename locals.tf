@@ -65,6 +65,9 @@ linked_service_keyvault      = "ls-keyvault"
 linked_service_sql_database  = "ls-azuresql"
 
 
+### LOG ANALYTICS
+analytics_name               = "mezine-law-nhood"
+
 ### TAGS
 created_by                   = "Elias Mezine"
 managed_by                   = "Terraform"

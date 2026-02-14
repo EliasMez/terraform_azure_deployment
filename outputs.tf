@@ -155,8 +155,25 @@ output "databricks_sp_client_id" {
   value       = data.azuread_service_principal.sp_databricks.client_id
 }
 
-output "spark_conf" {
-  description = "Configuration datalake du cluster databricks"
-  value       = databricks_cluster.cluster.spark_conf
-  sensitive   = true
+# output "spark_conf" {
+#   description = "Configuration datalake du cluster databricks"
+#   value       = databricks_cluster.cluster.spark_conf
+#   sensitive   = true
+# }
+
+
+### MONITORING OUTPUTS
+output "log_analytics_workspace_id" {
+  description = "ID du workspace Log Analytics"
+  value       = azurerm_log_analytics_workspace.law.id
+}
+
+output "log_analytics_workspace_name" {
+  description = "Nom du workspace Log Analytics"
+  value       = azurerm_log_analytics_workspace.law.name
+}
+
+output "action_group_id" {
+  description = "ID de l'Action Group email"
+  value       = azurerm_monitor_action_group.email_alert.id
 }
