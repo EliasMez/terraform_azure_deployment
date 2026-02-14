@@ -37,7 +37,14 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 │  │ - ls-keyvault        │              │ - Notebooks:           │          │
 │  │ - ls-azuresql        │              │   · mount_adls         │          │
 │  │                      │              │   · dbconnexion        │          │
-│  └──────────────────────┘              └────────────────────────┘          │
+│  └──────────┬───────────┘              └────────────────────────┘          │
+│             │                                                              │
+│  ┌──────────▼──────────────────────────────────────────────┐               │
+│  │              Azure Monitor + Log Analytics              │               │
+│  │  - Log Analytics Workspace (logs ADF, métriques)        │               │
+│  │  - Alertes : Pipeline Failure, Storage > 80%, DTU > 90% │               │
+│  │  - Action Group : notification email                    │               │
+│  └─────────────────────────────────────────────────────────┘               │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
 
@@ -66,6 +73,8 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 | **Data Factory** | `mezinefactorynhood2` | Orchestration ETL |
 | **Databricks** | `mezinedatabricksworkspace` | Traitement Spark |
 | **Purview** | `mezinepurviewnhood2` | Gouvernance données (North Europe) |
+| **Log Analytics** | `mezine-law-nhood` | Centralisation des logs et métriques (rétention 30j) |
+| **Azure Monitor** | `Global-Email-Alert` | Alertes métriques (ADF, Storage, SQL) + notification email |
 | **App Registration** | `mezine_app_registration_datalake_nhood` | Service Principal pour Databricks |
 
 ---
@@ -87,8 +96,8 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 |-----------|------|
 | `00-temp` | Fichiers temporaires |
 | `10-unprocessed` | Données brutes non traitées |
-| `20-raw` | Données brutes (Bronze) |
-| `50-entity` | Données transformées (Silver/Gold) |
+| `20-raw` | Données brutes |
+| `50-entity` | Données transformées |
 | `90-out` | Données de sortie |
 | `tfstate` | État Terraform |
 
@@ -104,14 +113,14 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 | `variables.tf` | Variables d'entrée |
 | `locals.tf` | Valeurs locales |
 | `resourcegroup.tf` | Resource Group |
-| `datalake.tf` | Storage Account et containers |
-| `sqldatabase.tf` | SQL Server, Database, Firewall |
+| `datalake.tf` | Storage Account, containers, lifecycle policy et alerte capacité |
+| `sqldatabase.tf` | SQL Server, Database, Firewall et alerte DTU |
 | `keyvault.tf` | Key Vault et access policies |
-| `datafactory.tf` | Data Factory et linked services |
+| `datafactory.tf` | Data Factory, linked services, diagnostic settings et alertes pipeline |
 | `databricks.tf` | Workspace, cluster, notebooks |
 | `purview.tf` | Purview et role assignments |
 | `serviceprincipal.tf` | App Registration et Service Principal |
-| `identity.tf` | User Assigned Managed Identity |
+| `monitoring.tf` | Log Analytics Workspace et Action Group email |
 | `outputs.tf` | Outputs exportés |
 
 ---
