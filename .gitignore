@@ -1,6 +1,6 @@
-terraform.tfvars
-terraform.tfstate
-terraform.tfstate.backup
+*.tfvars
+*.tfstate
+*.tfstate.backup
 memo.txt
 static-site
 .terraform/
