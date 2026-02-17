@@ -16,7 +16,7 @@ Plateforme de données Azure déployée via Terraform pour l'ingestion, le trait
 │                                                                            │
 │  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐     │
 │  │   Data Lake     │      │  Azure SQL DB   │      │    Key Vault    │     │
-│  │  (ADLS Gen2)    │◄────►│                 │      │                 │     │
+│  │  (ADLS Gen2)    │      │                 │      │                 │     │
 │  │                 │      │ mezinebasenhood │      │ Secrets:        │     │
 │  │ Containers:     │      │                 │      │ - sql-admin-pwd │     │
 │  │ - 00-temp       │      └────────▲────────┘      │ - app-secret    │     │
