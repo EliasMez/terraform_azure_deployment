@@ -41,8 +41,9 @@ resource "databricks_directory" "folder" {
 resource "databricks_cluster" "cluster" {
   cluster_name    = "mezineclusternhood"
   spark_version   = "13.3.x-scala2.12"
-  node_type_id    = "Standard_DS3_v2"
-  num_workers     = 1
+  node_type_id      = "Standard_D2ads_v6"
+  num_workers       = 1
+  data_security_mode = "SINGLE_USER"
   spark_conf = {
   "fs.azure.account.auth.type.${local.storage_account_name}.dfs.core.windows.net" = "OAuth"
   "fs.azure.account.oauth.provider.type.${local.storage_account_name}.dfs.core.windows.net" = "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider"
