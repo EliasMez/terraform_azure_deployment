@@ -124,3 +124,57 @@ df = spark.read \
   EOT
 )
 }
+
+
+resource "databricks_notebook" "purge_clients_data" {
+  path     = "${local.folder_path}/purge_clients_data"
+  language = "PYTHON"
+  content_base64 = base64encode(<<-EOT
+# Connexion à la base SQL
+jdbc_hostname = "${azurerm_mssql_server.mezinesqlservernhood.name}.database.windows.net"
+jdbc_database = "${azurerm_mssql_database.mezinesqldatabase.name}"
+jdbc_url = f"jdbc:sqlserver://{jdbc_hostname}:1433;database={jdbc_database}"
+username = "${var.administrator_login}"
+password = dbutils.secrets.get(scope="${databricks_secret_scope.mezinescopenhood.name}", key="sql-admin-password")
+
+# Suppression des clients dont la date de création dépasse 3 ans (conformité RGPD)
+purge_query = "DELETE FROM clients WHERE DATEDIFF(year, created_at, GETDATE()) > 3"
+count_query = "SELECT COUNT(*) as nb FROM clients WHERE DATEDIFF(year, created_at, GETDATE()) > 3"
+
+try:
+    # Comptage préalable des lignes à supprimer
+    df_count = spark.read.jdbc(url=jdbc_url, table=f"({count_query}) as t", properties={"user": username, "password": password})
+    row_count = df_count.collect()[0]["nb"]
+    print(f"Nombre de lignes à supprimer (clients > 3 ans) : {row_count}")
+
+    # Exécution de la suppression via JDBC
+    conn = spark._jvm.java.sql.DriverManager.getConnection(jdbc_url, username, password)
+    stmt = conn.createStatement()
+    deleted = stmt.executeUpdate(purge_query)
+    conn.close()
+    print(f"Suppression exécutée : {deleted} lignes supprimées.")
+
+except Exception as e:
+    print(f"Erreur lors de la suppression : {e}")
+    raise e
+EOT
+  )
+}
+
+# Job planifié pour exécuter la purge RGPD tous les mois
+resource "databricks_job" "purge_clients_job" {
+  name = "purge-clients-rgpd"
+
+  task {
+    task_key = "purge_clients"
+    existing_cluster_id = databricks_cluster.cluster.id
+    notebook_task {
+      notebook_path = databricks_notebook.purge_clients_data.path
+    }
+  }
+
+  schedule {
+    quartz_cron_expression = "0 0 2 1 * ?"
+    timezone_id            = "Europe/Paris"
+  }
+}
