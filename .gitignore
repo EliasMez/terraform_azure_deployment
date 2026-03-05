@@ -11,4 +11,4 @@ static-site
 .infracost
 *.html
 certif
-images
+make_pdf_e7.sh

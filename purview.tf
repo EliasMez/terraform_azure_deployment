@@ -33,9 +33,9 @@ resource "azurerm_role_assignment" "purview_sql_reader" {
 }
 
 
-resource "azurerm_role_assignment" "datalake_storage_blob_data_contributor_sys" {
+resource "azurerm_role_assignment" "datalake_storage_blob_data_reader_purview" {
   scope                = local.storage_account_id
-  role_definition_name = "Storage Blob Data Contributor"
+  role_definition_name = "Storage Blob Data Reader"
   principal_id         = azurerm_purview_account.purview.identity[0].principal_id
   principal_type       = "ServicePrincipal"
   depends_on = [azurerm_role_assignment.purview_subscription_reader]
